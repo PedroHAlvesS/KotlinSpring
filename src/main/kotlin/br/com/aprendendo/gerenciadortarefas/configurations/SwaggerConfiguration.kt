@@ -1,4 +1,4 @@
-package br.com.aprendendo.gerenciadortarefas.configuration
+package br.com.aprendendo.gerenciadortarefas.configurations
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

@@ -1,3 +1,3 @@
-package br.com.aprendendo.gerenciadortarefas.dto
+package br.com.aprendendo.gerenciadortarefas.dtos
 
 data class ErroDTO(val status: Int, val erro: String)
