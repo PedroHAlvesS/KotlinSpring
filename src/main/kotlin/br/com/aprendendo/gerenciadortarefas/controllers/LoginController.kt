@@ -25,7 +25,7 @@ class LoginController {
             if (loginDTO == null || loginDTO.login.isNullOrBlank() || loginDTO.login.isNullOrEmpty()
                     || loginDTO.senha.isNullOrBlank() || loginDTO.senha.isNullOrEmpty()) {
 
-                return ResponseEntity(ErroDTO(HttpStatus.BAD_REQUEST.value(), "Parâmetros de entrada inválidos"), HttpStatus.BAD_REQUEST))
+                return ResponseEntity(ErroDTO(HttpStatus.BAD_REQUEST.value(), "Parâmetros de entrada inválidos"), HttpStatus.BAD_REQUEST)
 
             }
             return ResponseEntity.ok("Logado")
