@@ -1,10 +1,10 @@
 package br.com.aprendendo.gerenciadortarefas.impls
 
-import br.com.aprendendo.gerenciadortarefas.entities.User
+import br.com.aprendendo.gerenciadortarefas.entities.UserEntity
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
-class UserDetailImpl(private val user: User): UserDetails {
+class UserDetailImpl(private val user: UserEntity): UserDetails {
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         return mutableListOf<GrantedAuthority>()

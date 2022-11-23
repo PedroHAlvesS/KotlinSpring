@@ -2,9 +2,11 @@ package br.com.aprendendo.gerenciadortarefas.filters
 
 import br.com.aprendendo.gerenciadortarefas.authorization
 import br.com.aprendendo.gerenciadortarefas.bearer
-import br.com.aprendendo.gerenciadortarefas.entities.User
+import br.com.aprendendo.gerenciadortarefas.entities.UserEntity
 import br.com.aprendendo.gerenciadortarefas.impls.UserDetailImpl
+import br.com.aprendendo.gerenciadortarefas.repositories.UserRepository
 import br.com.aprendendo.gerenciadortarefas.utils.JWTUtils
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
@@ -14,7 +16,7 @@ import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class JWTAutorizerFilter(authenticationManager: AuthenticationManager, val jwtUtils: JWTUtils)
+class JWTAutorizerFilter(authenticationManager: AuthenticationManager, val jwtUtils: JWTUtils, val userRepository: UserRepository)
     : BasicAuthenticationFilter(authenticationManager) {
 
 
@@ -34,9 +36,9 @@ class JWTAutorizerFilter(authenticationManager: AuthenticationManager, val jwtUt
         if (jwtUtils.isValidToken(token)) {
             val idString = jwtUtils.getUserId(token)
             if (!idString.isNullOrBlank() && !idString.isNullOrEmpty()) {
-                val usuario = User(id = idString.toLong(), nome = "usuario teste", email = "admin@admin.com", senha = "123")
-                val userDetailImpl = UserDetailImpl(usuario)
-                return UsernamePasswordAuthenticationToken(userDetailImpl, null, userDetailImpl.authorities)
+                val user = userRepository.findByIdOrNull(idString.toLong()) ?: throw UsernameNotFoundException("Usuário não encontrado")
+                val userImpl = UserDetailImpl(user)
+                return UsernamePasswordAuthenticationToken(userImpl, null, userImpl.authorities)
             }
         }
         throw UsernameNotFoundException("Invalid Token")
